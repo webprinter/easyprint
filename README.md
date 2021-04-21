@@ -3,11 +3,12 @@
 #### 介绍
 easyprint.js，比webprinter.js更快速接入WebPrinter打印控件的客户端
 
-#### 软件架构
-软件架构说明
+#### 关于WebPrinter
+WebPrinter是面向互联网的浏览器打印控件，满足多种场景下的网页打印需求。为电商、物流及服务型机构等众多行业提供一站式打印解决方案。[https://www.webprinter.cn/](WebPrinter官网)
+easyprint.js需要依赖webprinter.js，关于webprinter.js的使用请[https://www.webprinter.cn/doc/jsapi](参考这里)。
 
 
-#### 安装教程
+#### 引入
 
 1.  xxxx
 2.  xxxx
@@ -19,19 +20,4 @@ easyprint.js，比webprinter.js更快速接入WebPrinter打印控件的客户端
 2.  xxxx
 3.  xxxx
 
-#### 参与贡献
 
-1.  Fork 本仓库
-2.  新建 Feat_xxx 分支
-3.  提交代码
-4.  新建 Pull Request
-
-
-#### 特技
-
-1.  使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2.  Gitee 官方博客 [blog.gitee.com](https://blog.gitee.com)
-3.  你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解 Gitee 上的优秀开源项目
-4.  [GVP](https://gitee.com/gvp) 全称是 Gitee 最有价值开源项目，是综合评定出的优秀开源项目
-5.  Gitee 官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6.  Gitee 封面人物是一档用来展示 Gitee 会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
