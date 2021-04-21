@@ -135,7 +135,7 @@
          }
      }
 
-     var Paper=_declareObject("Paper",["width","height"]);
+     var Paper=_declareObject("Paper",["name","width","height"]);
      var Config=_declareObject("Config",["pagesPerSheet","paper","copies","marginTop","marginBottom","marginLeft","marginRight","orientation","color","side","collate","repeats","pageRanges","scale"]);
      var Task=_declareObject("Task",["id","name","printer","type","html","content","timeout","config","pdfRenderType","delay"]);
      _extend(Config,{

@@ -9,15 +9,25 @@
         <div id="tasks"></div>
         <div>
             打印机：
-            <select id="printers"></select>
+            <select id="printers" onchange="refreshPapers()"></select>
         </div>
         <div>
-            <label><input name="content_type" value="text" type="radio" checked onclick="switchTo('text')">Text</label>
+            纸张类型：
+            <select id="papers"></select>
+        </div>
+        <div>
+            <label><input name="content_type" value="html" type="radio" checked onclick="switchTo('html')">Html</label>
             <label><input name="content_type" value="url" type="radio" onclick="switchTo('url')">URL</label>
-            <div style="display:none" id="input_text">
+            <label><input name="content_type" value="pdf" type="radio" checked onclick="switchTo('pdf')">PDF</label>
+            <div style="display:none" id="input_html">
                 请输入内容：<br>
-                <textarea id="content_text" cols="100" rows="10"></textarea><br>
-                <input type="button" onclick="doPrint('text')" value="打印">
+                <textarea id="content_html" cols="100" rows="10"></textarea><br>
+                <input type="button" onclick="doPrint('html')" value="打印">
+            </div>
+            <div style="display:none" id="input_pdf">
+                请输入PDF Base64文本：<br>
+                <textarea id="content_pdf" cols="100" rows="10"></textarea><br>
+                <input type="button" onclick="doPrint('pdf')" value="打印">
             </div>
             <div style="display:none" id="input_url">
                 请输入URL：<br>
@@ -37,7 +47,7 @@
             div.style.display="none";
         }
         function switchTo(type){
-            var types=["text","url"];
+            var types=["html","url","pdf"];
             for(var i=0,len=types.length;i<len;i++){
                 var thetype=types[i];
                 var div=document.getElementById("input_"+thetype);
@@ -48,7 +58,7 @@
                 }
             }
         }
-        switchTo("text");
+        switchTo("html");
         function refreshTaskTable(tasks){
 			var htmls=[];
 			var taskStatusMapping={"SUBMITTED":"已接收","QUEUED":"等待处理","PRINTING":"正在打印","PRINTED":"已打印","FINISHED":"已完成","CANCELED":"已取消","ERROR":"出错"};
@@ -71,6 +81,36 @@
 			htmls.push("</table>");
 			document.getElementById("tasks").innerHTML=htmls.join("\n");
         }
+        var paperIndex={};
+        function refreshPapers(){
+            var select=document.getElementById("papers");
+            select.innerHTML="";
+            paperIndex={};
+            var printerName=document.getElementById("printers").value;
+            if(printerName==""){
+                return;
+            }
+            var wp=webprinter.easy().wpInstance();
+            wp.listPapers(printerName,function(papers){
+                papers=papers||[];
+                for(var i=0,len=papers.length;i<len;i++){
+                    var paper=papers[i];
+                    paperIndex[paper.name]=paper;
+                    var option=document.createElement("option");
+                    var width=paper.w/1000;
+                    var height=paper.h/1000;
+                    var paperName=paper.name+"("+width+"mm x "+height+"mm)";
+                    option.value=paper.name;
+                    option.innerHTML=paperName;
+                    select.appendChild(option);
+                }
+            })
+        }
+        function getSelectedPaper(){
+            var select=document.getElementById("papers");
+            var paperName=select.value;
+            return paperIndex[paperName];
+        }
     </script>
     <script>
         webprinter.easy().enableDebug();//启用调试日志
@@ -78,15 +118,21 @@
         function doPrint(type){
             var printerSelect=document.getElementById("printers");
             var printer=printerSelect.value;
-            var paper=webprinter.easy().paper().with_width(97).with_height(24);
+            var selectedPaper=getSelectedPaper();
+            var paper=webprinter.easy().paper();
+            if(selectedPaper){
+                paper.with_name(selectedPaper.name).with_width(selectedPaper.w/1000).with_height(selectedPaper.h/1000);
+            }
             var CONSTANTS=webprinter.easy().constants();
             var config=webprinter.easy().config().with_orientation(CONSTANTS.CONFIG_ORIENTATION.PORTRAIT).with_color(CONSTANTS.CONFIG_COLOR.COLOR).with_side(CONSTANTS.CONFIG_SIDE.ONESIDE).with_collate(CONSTANTS.CONFIG_COLLATE.UNCOLLATE).with_copies(1).with_zero_margins().with_paper(paper);
             var task=webprinter.easy().task().with_printer(printer).with_config(config);
             var content=document.getElementById("content_"+type).value;
             if(type=="url"){
                 task.with_url(content);
-            }else{
+            }else if(type=="html"){
                 task.with_html(content);
+            }else if(type=="pdf"){
+                task.with_pdfbase64(content);
             }
             webprinter.easy().print(task);
         }
@@ -117,6 +163,7 @@
                 option.innerHTML=html;
                 select.appendChild(option);
             }
+            refreshPapers();
         })
     </script>
 </html>
