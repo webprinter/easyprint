@@ -1,0 +1,121 @@
+<html>
+    <head>
+        <script src="https://get.webprinter.cn/default/5.2.0/webprinter.js" type="text/javascript"></script>
+        <script src="webprinter-easyprint.js" type="text/javascript"></script>
+    </head>
+    <body>
+        <form>
+        <div id="statusText"></div>
+        <div id="tasks"></div>
+        <div>
+            打印机：
+            <select id="printers"></select>
+        </div>
+        <div>
+            <label><input name="content_type" value="text" type="radio" checked onclick="switchTo('text')">Text</label>
+            <label><input name="content_type" value="url" type="radio" onclick="switchTo('url')">URL</label>
+            <div style="display:none" id="input_text">
+                请输入内容：<br>
+                <textarea id="content_text" cols="100" rows="10"></textarea><br>
+                <input type="button" onclick="doPrint('text')" value="打印">
+            </div>
+            <div style="display:none" id="input_url">
+                请输入URL：<br>
+                <input id="content_url" type="url" size="50"><br>
+                <input type="button" onclick="doPrint('url')" value="打印">
+            </div>
+        </div>
+
+        
+    </form>
+    </body>
+    <script>
+        function show(div){
+            div.style.display="block";
+        }
+        function hide(div){
+            div.style.display="none";
+        }
+        function switchTo(type){
+            var types=["text","url"];
+            for(var i=0,len=types.length;i<len;i++){
+                var thetype=types[i];
+                var div=document.getElementById("input_"+thetype);
+                if(thetype==type){
+                    show(div);
+                }else{
+                    hide(div);
+                }
+            }
+        }
+        switchTo("text");
+        function refreshTaskTable(tasks){
+			var htmls=[];
+			var taskStatusMapping={"SUBMITTED":"已接收","QUEUED":"等待处理","PRINTING":"正在打印","PRINTED":"已打印","FINISHED":"已完成","CANCELED":"已取消","ERROR":"出错"};
+			htmls.push("<table border='1'>");
+			htmls.push("<tr>");
+			htmls.push("<th>任务名称</th>");
+			htmls.push("<th>目标打印机</th>");
+			htmls.push("<th>任务状态</th>");
+			htmls.push("<th></th>");
+			htmls.push("</tr>");
+			for(var i=0,len=tasks.length;i<len;i++){
+				var task=tasks[i];
+				htmls.push("<tr>");
+				htmls.push("<td>"+task.name+"</td>");
+				htmls.push("<td>"+(task.printer||"默认")+"</td>");
+				htmls.push("<td>"+taskStatusMapping[task.status]+"</td>");
+				htmls.push("<td>"+(task.errorMessage||"")+"</td>");
+				htmls.push("</tr>");
+			}
+			htmls.push("</table>");
+			document.getElementById("tasks").innerHTML=htmls.join("\n");
+        }
+    </script>
+    <script>
+        webprinter.easy().enableDebug();//启用调试日志
+        webprinter.easy().constants().dump();//打印所有的常量
+        function doPrint(type){
+            var printerSelect=document.getElementById("printers");
+            var printer=printerSelect.value;
+            var paper=webprinter.easy().paper().with_width(97).with_height(24);
+            var config=webprinter.easy().config().with_orientation("PORTRAIT").with_color("COLOR").with_side("ONESIDE").with_collate("COLLATE").with_copies(1).with_zero_margins().with_paper(paper);
+            var task=webprinter.easy().task().with_printer(printer).with_config(config);
+            var content=document.getElementById("content_"+type).value;
+            if(type=="url"){
+                task.with_url(content);
+            }else{
+                task.with_html(content);
+            }
+            webprinter.easy().print(task);
+        }
+        webprinter.easy().observeTasks(function(tasks){
+            refreshTaskTable(tasks);
+        })
+        webprinter.easy().observeConnection(function(connected,info){//监听控件连接状态
+            var text=null;
+            if(connected){
+                text="WebPrinter v"+info.currentVersion+" 已连接";
+            }else{
+                text="已断开";
+            }
+            document.getElementById("statusText").innerHTML=text;
+        })
+        webprinter.easy().observePrinters(function(printers,defaultPrinter){//监听打印机列表
+            var select=document.getElementById("printers");
+            select.innerHTML="";
+            for(var i=0,len=printers.length;i<len;i++){
+                var printer=printers[i];
+                var option=document.createElement("option");
+                option.value=printer;
+                var html=printer;
+                if(printer==defaultPrinter){
+                    html+="[默认]";
+                    option.selected=true;
+                }
+                option.innerHTML=html;
+                select.appendChild(option);
+            }
+        })
+    </script>
+</html>
