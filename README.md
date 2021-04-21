@@ -48,18 +48,25 @@ webprinter.easy().print(task);
 #### 关键方法
 1. webprinter.easy().paper()
 创建页面设置
+
 2. webprinter.easy().config()
 创建一个打印任务设置
+
 3. webprinter.easy().task()
 创建打印任务
+
 4. webprinter.easy().print(task)
 发送任务至WebPrinter
+
 5. webprinter.easy().enableDebug()
 启用调试日志输出(至console)
+
 6. webprinter.easy().disableDebug()
 禁用调试日志输出(至console)
+
 7. webprinter.easy().wpInstance()
 得到Strato.WebPrinter.getInstance()单例对象。参考[WebPrinter JSAPI](https://www.webprinter.cn/doc/jsapi)。
+
 8. webprinter.easy().constants()
 得到easyprint的所有常量。
 可通过
@@ -67,6 +74,7 @@ webprinter.easy().print(task);
 webprinter.easy().constants().dump()
 ```
 打印到console。
+
 9. webprinter.easy().ready(callback)
 当Strato.WebPrinter首次连接至控件时调用。
 callback的入参为wp实例(等同于 webprinter.easy().wpInstance() )。
@@ -76,6 +84,7 @@ webprinter.easy().ready(function(wp){
     console.log("wp",wp);
 })
 ```
+
 10. webprinter.easy().observePrinters(callback)
 监听打印机列表的变化。
 callback的入参为打印机名称列表和默认打印机名称。
@@ -86,6 +95,7 @@ webprinter.easy().observePrinters(function(printers,defaultPrinter){
     console.log("Default printer",defaultPrinter)
 })
 ```
+
 11. webprinter.easy().observeConnection(callback)
 监听Web页面和打印控件的连接状态，callback参数为是否已连接connected和控件信息info，当connected==false时，info为null。
 例如：
@@ -97,6 +107,7 @@ webprinter.easy().observeConnection(function(connected,info){
     }
 })
 ```
+
 12. webprinter.easy().observeTasks(callback)
 监听任务列表变化情况。callback参数为任务列表。
 例如：
