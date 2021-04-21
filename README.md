@@ -2,10 +2,10 @@
 
 #### 介绍
 easyprint.js，比webprinter.js更快速接入WebPrinter打印控件的客户端
-easyprint.js需要依赖webprinter.js，关于webprinter.js的使用请[https://www.webprinter.cn/doc/jsapi](参考这里)。
+easyprint.js需要依赖webprinter.js，关于webprinter.js的使用请[参考这里](https://www.webprinter.cn/doc/jsapi)。
 
 #### 关于WebPrinter和easyprint
-WebPrinter是面向互联网的浏览器打印控件，满足多种场景下的网页打印需求。为电商、物流及服务型机构等众多行业提供一站式打印解决方案。[https://www.webprinter.cn/](WebPrinter官网)
+WebPrinter是面向互联网的浏览器打印控件，满足多种场景下的网页打印需求。为电商、物流及服务型机构等众多行业提供一站式打印解决方案。[WebPrinter官网](https://www.webprinter.cn/)
 使用webprinter.js已拥有了WebPrinter的JSAPI能力，easyprint.js在webprinter.js基础上做了友好型封装，可使用easyprint API快速开发打印程序。
 相比于webprinter.js，easyprint.js在如下方面做了增强：  
 1. 新的Fluent API具备更高的可读性
@@ -15,12 +15,12 @@ WebPrinter是面向互联网的浏览器打印控件，满足多种场景下的�
 #### 引入
 WebPrinter已提供js的cdn地址，可在页面中直接引入：  
 ```html
-<script type="text/javascript" src="https://get.webprinter.cn/default/5.2.0/webprinter.js">
-<script type="text/javascript" src="https://get.webprinter.cn/default/5.2.0/easyprint.js">
+<script type="text/javascript" src="https://get.webprinter.cn/default/5.2.1/webprinter.js">
+<script type="text/javascript" src="https://get.webprinter.cn/default/5.2.1/easyprint.js">
 ```
 
 说明：
-5.0.2为版本号，请移步[https://www.webprinter.cn/](官网)查看最新版本号。
+5.2.1为版本号，请移步[官网](https://www.webprinter.cn/)查看最新版本号。
 
 1. 获取easy实例
 可通过
@@ -59,7 +59,7 @@ webprinter.easy().print(task);
 6. webprinter.easy().disableDebug()
 禁用调试日志输出(至console)
 7. webprinter.easy().wpInstance()
-得到Strato.WebPrinter.getInstance()单例对象。参考[https://www.webprinter.cn/doc/jsapi](WebPrinter JSAPI)。
+得到Strato.WebPrinter.getInstance()单例对象。参考[WebPrinter JSAPI](https://www.webprinter.cn/doc/jsapi)。
 8. webprinter.easy().constants()
 得到easyprint的所有常量。
 可通过
@@ -107,7 +107,8 @@ webprinter.easy().observeTasks(function(tasks){
 ```
 注：目前采用轮询方式监听。
 
+具体实现，请参阅[webprinter-easyprint.js](webprinter-easyprint.js)源码。
+
 #### 示例
-具体实现，请参阅[webprinter-easyprint.js](webprinter-easyprint.js源码)。
-参考[webprinter-easyprint-test.html](webprinter-easyprint-test.html)
+参考示例文件[webprinter-easyprint-test.html](webprinter-easyprint-test.html)
 
