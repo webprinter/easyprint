@@ -79,7 +79,8 @@
             var printerSelect=document.getElementById("printers");
             var printer=printerSelect.value;
             var paper=webprinter.easy().paper().with_width(97).with_height(24);
-            var config=webprinter.easy().config().with_orientation("PORTRAIT").with_color("COLOR").with_side("ONESIDE").with_collate("COLLATE").with_copies(1).with_zero_margins().with_paper(paper);
+            var CONSTANTS=webprinter.easy().constants();
+            var config=webprinter.easy().config().with_orientation(CONSTANTS.CONFIG_ORIENTATION.PORTRAIT).with_color(CONSTANTS.CONFIG_COLOR.COLOR).with_side(CONSTANTS.CONFIG_SIDE.ONESIDE).with_collate(CONSTANTS.CONFIG_COLLATE.UNCOLLATE).with_copies(1).with_zero_margins().with_paper(paper);
             var task=webprinter.easy().task().with_printer(printer).with_config(config);
             var content=document.getElementById("content_"+type).value;
             if(type=="url"){
